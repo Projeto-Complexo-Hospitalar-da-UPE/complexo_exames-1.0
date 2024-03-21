@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Complexo hospitalar UPE</title>
+    </head>
+    <body>
+    
+    {% if form.errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Não foi possível registrar o paciente, tente novamente
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    
+        <br></br>
+        {% if user.is_authenticated %}
+            {% for group in request.user.groups.all %}
+                {% if group.name == 'medicos'%}
+                <h1 align="center">Registre um paciente:</h1>
+                <form style="margin:75px" action="{% url 'login_cliente:registro_usuario' %}" method=POST>
+                {% csrf_token %}
+                    
+                    {{ form.as_p }}
+          
+                <br>
+                <button type="submit" class="btn btn-primary">Registrar</button>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+        <h1>Página não disponível</h1>
+        {% endif %}
+
+        </form>
+    </body>
+</html>
+
+{% endblock %}
